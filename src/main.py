@@ -5,15 +5,28 @@ from extractor import extract_skills, extract_availability
 with open("../data/websites.txt") as f:
     sites = [line.strip() for line in f]
 
+paths = ["", "/about", "/about-me", "/bio", "/profile"]
+
 for site in sites:
-    url = f"https://{site}"
+    print(f"\nChecking: {site}")
 
-    html, status = fetch_page(url)
+    for path in paths:
+        url = f"https://{site}{path}"
 
-    print(site, status)
+        html, status = fetch_page(url)
+        print(f"  Trying {path or '/'} → {status}")
 
-from scraper.parser import parse_html
+        if html:
+            soup = parse_html(html)
+            text = extract_text(soup)
 
-if html:
-    soup = parse_html(html)
-    print(soup.title.string)
+            print("  Preview:", text[:200])
+
+            skills = extract_skills(text)
+            availability = extract_availability(text)
+
+            if skills or availability:
+                print("  ✅ FOUND DATA!")
+                print("  Skills:", skills)
+                print("  Available:", availability)
+                break

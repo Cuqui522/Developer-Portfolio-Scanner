@@ -62,15 +62,22 @@ developer-portfolio-scanner
 │   └── websites.txt
 │
 ├── src
-│   └── scanner.py
+│   └── __init__.py
+|   └── main.py
+|   └── extractor.py
+|   └── fetcher.py
+|   └── parser.py
 │
 ├── output
+|   └── .gitkeep
+|    └── results.csv
 │
+├── .gitignore
+├── LICENSE
 ├── README.md
 └── requirements.txt
-```
 
----
+```
 
 ## How It Works
 

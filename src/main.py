@@ -1,32 +1,87 @@
+import csv
+import os
 from fetcher import fetch_page
 from parser import parse_html, extract_text
 from extractor import extract_skills, extract_availability
 
-with open("../data/websites.txt") as f:
-    sites = [line.strip() for line in f]
+PATHS = ["", "/about", "/about-me", "/bio", "/profile", "/projects", "/portfolio", "/work"]
+OUTPUT_FILE = "../output/results.csv"
 
-paths = ["", "/about", "/about-me", "/bio", "/profile"]
+def clean_url(site):
+    """Normalize URL - strip protocol so we control it."""
+    site = site.strip()
+    for prefix in ("https://", "http://"):
+        if site.startswith(prefix):
+            site = site[len(prefix):]
+    return site
 
-for site in sites:
-    print(f"\nChecking: {site}")
+def score_result(skills, availability):
+    """Score: sum of all skill mention counts + bonus for availability."""
+    skill_score = sum(skills.values())
+    availability_bonus = 10 if availability else 0
+    return skill_score + availability_bonus
 
-    for path in paths:
+def scrape_site(site):
+    best_result = None
+    best_score = 0
+
+    for path in PATHS:
         url = f"https://{site}{path}"
-
         html, status = fetch_page(url)
-        print(f"  Trying {path or '/'} → {status}")
+        print(f"  {path or '/'} → {status}", end="")
 
-        if html:
-            soup = parse_html(html)
-            text = extract_text(soup)
+        if not html or str(status).startswith(("4", "5")):
+            print()
+            continue
 
-            print("  Preview:", text[:200])
+        soup = parse_html(html)
+        text = extract_text(soup)
+        skills = extract_skills(text)
+        availability = extract_availability(text)
+        score = score_result(skills, availability)
 
-            skills = extract_skills(text)
-            availability = extract_availability(text)
+        print(f" | score={score} | skills={len(skills)} | available={availability}")
 
-            if skills or availability:
-                print("  ✅ FOUND DATA!")
-                print("  Skills:", skills)
-                print("  Available:", availability)
-                break
+        if score > best_score:
+            best_score = score
+            best_result = {
+                "site": site,
+                "url": url,
+                "available": availability,
+                "skills": ", ".join(skills.keys()),
+                "skill_detail": str(skills),
+                "score": score,
+            }
+
+        # Only stop early if we have a strong result
+        if score >= 20:
+            break
+
+    return best_result
+
+def main():
+    with open("../data/websites.txt") as f:
+        sites = [clean_url(line) for line in f if line.strip()]
+
+    results = []
+    for site in sites:
+        print(f"\n🔍 Scraping: {site}")
+        result = scrape_site(site)
+        if result:
+            results.append(result)
+            print(f"  ✅ Best page: {result['url']} (score={result['score']})")
+        else:
+            print(f"  ❌ No data found")
+            results.append({"site": site, "url": "", "available": False,
+                            "skills": "", "skill_detail": "", "score": 0})
+
+    os.makedirs("../output", exist_ok=True)
+    with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["site", "url", "available", "skills", "skill_detail", "score"])
+        writer.writeheader()
+        writer.writerows(results)
+
+    print(f"\n📄 Results saved to {OUTPUT_FILE}")
+
+if __name__ == "__main__":
+    main()

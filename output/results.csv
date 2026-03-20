@@ -1,0 +1,12 @@
+site,url,available,skills,skill_detail,score
+www.natebjones.com/,https://www.natebjones.com//projects,False,machine learning,{'machine learning': 1},1
+bepatrickdavid.com/,https://bepatrickdavid.com/,False,"c#, html/css","{'c#': 2, 'html/css': 25}",27
+brittanychiang.com/,https://brittanychiang.com/,False,"javascript, html/css","{'javascript': 1, 'html/css': 2}",3
+lauren-waller.com/,https://lauren-waller.com//about,False,html/css,{'html/css': 5},5
+vanholtz.co/,,False,,,0
+www.codewonders.dev/,https://www.codewonders.dev//projects,False,"javascript, html/css","{'javascript': 9, 'html/css': 3}",12
+www.adhamdannaway.com/,https://www.adhamdannaway.com//about,False,"javascript, html/css","{'javascript': 1, 'html/css': 2}",3
+www.rammaheshwari.com/,https://www.rammaheshwari.com/,True,"javascript, html/css, git","{'javascript': 12, 'html/css': 21, 'git': 2}",45
+www.seanhalpin.xyz/,,False,,,0
+edh.dev/,https://edh.dev/,False,"java, javascript, typescript, html/css, sql, aws, azure, machine learning","{'java': 1, 'javascript': 6, 'typescript': 7, 'html/css': 2, 'sql': 1, 'aws': 1, 'azure': 1, 'machine learning': 2}",21
+cydstumpel.nl/,https://cydstumpel.nl/,True,"html/css, git","{'html/css': 9, 'git': 2}",21

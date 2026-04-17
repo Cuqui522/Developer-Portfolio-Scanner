@@ -70,7 +70,7 @@ developer-portfolio-scanner
 │
 ├── output
 |   └── .gitkeep
-|    └── results.csv
+|   └── results.csv
 │
 ├── .gitignore
 ├── LICENSE
@@ -78,6 +78,8 @@ developer-portfolio-scanner
 └── requirements.txt
 
 ```
+
+---
 
 ## How It Works
 

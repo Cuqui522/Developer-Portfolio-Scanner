@@ -1,175 +1,170 @@
-markdown_content = "I have converted the "Standing Orders" document into a Markdown format for you.
+I have converted the "Standing Orders" document into a Markdown format for you.
 
-# [cite_start]PROGRAMMER PORTFOLIO SCRAPER [cite: 1]
+# PROGRAMMER PORTFOLIO SCRAPER
 
-## [cite_start]Standing Orders, Architecture Rules & Development Standards [cite: 2]
+## Standing Orders, Architecture Rules & Development Standards
 
-[cite_start]*Version 1.0 — March 2026 — Python Course Capstone Project* [cite: 3]
+*Version 1.0 — March 2026 — Python Course Capstone Project*
 
 -----
 
-## [cite_start]0. Document Control [cite: 4]
+## 0. Document Control
 
-[cite_start]This document defines the rules and standards that govern all development on the Programmer Portfolio Scraper project. [cite: 5] [cite_start]All contributors — including future collaborators and AI assistants — must adhere to these standards. [cite: 6] [cite_start]Update the version table below whenever this document is revised. [cite: 7]
+This document defines the rules and standards that govern all development on the Programmer Portfolio Scraper project. All contributors — including future collaborators and AI assistants — must adhere to these standards. Update the version table below whenever this document is revised.
 
 | Version | Date | Author | Notes |
 | :--- | :--- | :--- | :--- |
-| v1.0 | 2026-03-24 | Project founder | [cite_start]Initial release [cite: 8] |
+| v1.0 | 2026-03-24 | Project founder | Initial release |
 
 -----
 
-## [cite_start]1. Project Purpose & Scope [cite: 9]
+## 1. Project Purpose & Scope
 
-[cite_start]The Programmer Portfolio Scraper is a Python tool designed to crawl programmer personal websites, extract professional availability signals and technical skill sets, score each profile, and export structured results for use in recruiting and lead generation workflows. [cite: 10]
+The Programmer Portfolio Scraper is a Python tool designed to crawl programmer personal websites, extract professional availability signals and technical skill sets, score each profile, and export structured results for use in recruiting and lead generation workflows.
 
-### [cite_start]1.1 Core objectives [cite: 11]
+### 1.1 Core objectives
 
-  * [cite_start]Scrape programmer personal websites reliably across diverse site structures. [cite: 12]
-  * [cite_start]Extract availability signals (e.g., open to work, hire me) with high accuracy. [cite: 13]
-  * [cite_start]Detect and score technical skills by category and mention frequency. [cite: 14]
-  * [cite_start]Export clean, structured data to CSV (later: database) for downstream use. [cite: 15]
-  * [cite_start]Scale from a course project into a production-ready recruiting tool. [cite: 16]
+  * Scrape programmer personal websites reliably across diverse site structures.
+  * Extract availability signals (e.g., open to work, hire me) with high accuracy.
+  * Detect and score technical skills by category and mention frequency.
+  * Export clean, structured data to CSV (later: database) for downstream use.
+  * Scale from a course project into a production-ready recruiting tool.
 
-### [cite_start]1.2 Out of scope (v1) [cite: 17]
+### 1.2 Out of scope (v1)
 
-  * [cite_start]Social media scraping (LinkedIn, GitHub, Twitter/X). [cite: 18]
-  * [cite_start]Job board scraping or aggregation. [cite: 19]
-  * [cite_start]Real-time alerting or notification systems. [cite: 20]
-  * [cite_start]User authentication or multi-tenant access. [cite: 21]
+  * Social media scraping (LinkedIn, GitHub, Twitter/X).
+  * Job board scraping or aggregation.
+  * Real-time alerting or notification systems.
+  * User authentication or multi-tenant access.
 
 -----
 
-## [cite_start]2. Architecture & Module Responsibilities [cite: 22]
+## 2. Architecture & Module Responsibilities
 
-[cite_start]The project follows a strict single-responsibility module design where each file owns exactly one concern. [cite: 23] [cite_start]This boundary must not be broken as the project scales. [cite: 24]
+The project follows a strict single-responsibility module design where each file owns exactly one concern. This boundary must not be broken as the project scales.
 
 | Module | File | Responsibility |
 | :--- | :--- | :--- |
-| **Orchestrator** | `main.py` | Entry point. [cite_start]Reads input, loops sites and paths, calls all modules, compares page scores, writes output. [cite: 25] |
-| **Fetcher** | `fetcher.py` | HTTP requests only. No parsing, no extraction. Returns (html, status). [cite_start]Handles all network errors explicitly. [cite: 25] |
-| **Parser** | `parser.py` | HTML → clean text only. No extraction logic. [cite_start]Strips script/style/nav/footer tags before text extraction. [cite: 25] |
-| **Extractor** | `extractor.py` | Regex-based skills detection and availability extraction. No I/O, no HTTP. [cite_start]Pure text in, structured data out. [cite: 25] |
-| **Data** | `websites.txt` | Input list of domains. One domain per line. No protocol prefix. [cite_start]Comments allowed with \# prefix. [cite: 25] |
-| **Output** | `results.csv` | Structured results. One row per site. [cite_start]Never manually edited — always regenerated by `main.py`. [cite: 25] |
+| **Orchestrator** | `main.py` | Entry point. Reads input, loops sites and paths, calls all modules, compares page scores, writes output. |
+| **Fetcher** | `fetcher.py` | HTTP requests only. No parsing, no extraction. Returns (html, status). Handles all network errors explicitly. |
+| **Parser** | `parser.py` | HTML → clean text only. No extraction logic. Strips script/style/nav/footer tags before text extraction. |
+| **Extractor** | `extractor.py` | Regex-based skills detection and availability extraction. No I/O, no HTTP. Pure text in, structured data out. |
+| **Data** | `websites.txt` | Input list of domains. One domain per line. No protocol prefix. Comments allowed with # prefix. |
+| **Output** | `results.csv` | Structured results. One row per site. Never manually edited — always regenerated by `main.py`. |
 
 -----
 
-## [cite_start]3. Code Standards & Rules [cite: 26]
+## 3. Code Standards & Rules
 
-### [cite_start]3.1 General coding rules [cite: 27]
+### 3.1 General coding rules
 
-| \# | Rule | Description | Status |
+| # | Rule | Description | Status |
 | :--- | :--- | :--- | :--- |
-| **C-01** | One concern per module | [cite_start]Never add HTTP logic to `parser.py`, extraction logic to `fetcher.py`, etc. Module boundaries are fixed. [cite: 28] | **MUST** |
-| **C-02** | Explicit exception handling | Never use bare `except:` clauses. [cite_start]Always catch named exceptions and return a meaningful status string. [cite: 28] | **MUST** |
-| **C-03** | No hardcoded URLs | All input domains come from `websites.txt`. [cite_start]No domains are hardcoded in any `.py` file. [cite: 28] | **MUST** |
-| **C-04** | Case-insensitive regex | [cite_start]All `re.findall()` and `re.search()` calls in `extractor.py` must pass `re.IGNORECASE`. [cite: 28] | **MUST** |
-| **C-05** | URL normalisation | [cite_start]Always strip protocol prefixes before constructing URLs using `clean_url()` in `main.py`. [cite: 28] | **MUST** |
-| **C-06** | Type hints | [cite_start]All new functions added after v1.0 must include Python type hints. [cite: 28] | **SHOULD** |
-| **C-07** | Docstrings | [cite_start]Every function must have a one-line docstring stating what it does, not how. [cite: 28] | **SHOULD** |
-| **C-08** | No print() in modules | `fetcher`, `parser`, and `extractor` must not print to stdout. [cite_start]Logging is for the orchestrator. [cite: 28] | **AVOID** |
+| **C-01** | One concern per module | Never add HTTP logic to `parser.py`, extraction logic to `fetcher.py`, etc. Module boundaries are fixed. | **MUST** |
+| **C-02** | Explicit exception handling | Never use bare `except:` clauses. Always catch named exceptions and return a meaningful status string. | **MUST** |
+| **C-03** | No hardcoded URLs | All input domains come from `websites.txt`. No domains are hardcoded in any `.py` file. | **MUST** |
+| **C-04** | Case-insensitive regex | All `re.findall()` and `re.search()` calls in `extractor.py` must pass `re.IGNORECASE`. | **MUST** |
+| **C-05** | URL normalisation | Always strip protocol prefixes before constructing URLs using `clean_url()` in `main.py`. | **MUST** |
+| **C-06** | Type hints | All new functions added after v1.0 must include Python type hints. | **SHOULD** |
+| **C-07** | Docstrings | Every function must have a one-line docstring stating what it does, not how. | **SHOULD** |
+| **C-08** | No print() in modules | `fetcher`, `parser`, and `extractor` must not print to stdout. Logging is for the orchestrator. | **AVOID** |
 
-### [cite_start]3.2 Scraping rules [cite: 29]
+### 3.2 Scraping rules
 
-| \# | Rule | Description | Status |
+| # | Rule | Description | Status |
 | :--- | :--- | :--- | :--- |
-| **S-01** | User-Agent header | [cite_start]Always send a descriptive User-Agent: `Mozilla/5.0 (compatible; PortfolioScraper/1.0)`. [cite: 30] | **MUST** |
-| **S-02** | Timeout | `requests.get()` must include a timeout (default 8 seconds). [cite_start]Never make unbounded requests. [cite: 30] | **MUST** |
-| **S-03** | Respect Status Codes | [cite_start]Do not extract data from 4xx or 5xx responses. [cite: 30] | **MUST** |
-| **S-04** | Fixed Path Order | [cite_start]Crawl order: `/` → `/about` → `/about-me` → `/bio` → `/profile` → `/projects` → `/portfolio` → `/work`. [cite: 30] | **MUST** |
-| **S-05** | Early Exit Score | [cite_start]Stop crawling additional paths for a site only when score \>= 20. [cite: 30] | **MUST** |
-| **S-06** | Keep Best Page | [cite_start]Always keep the highest-scoring page result per site, not just the first one found. [cite: 30] | **MUST** |
-| **S-07** | Rate limiting | [cite_start]Add a 1–2 second delay when scraping more than 50 sites in a batch. [cite: 30] | **NOTE** |
+| **S-01** | User-Agent header | Always send a descriptive User-Agent: `Mozilla/5.0 (compatible; PortfolioScraper/1.0)`. | **MUST** |
+| **S-02** | Timeout | `requests.get()` must include a timeout (default 8 seconds). Never make unbounded requests. | **MUST** |
+| **S-03** | Respect Status Codes | Do not extract data from 4xx or 5xx responses. | **MUST** |
+| **S-04** | Fixed Path Order | Crawl order: `/` → `/about` → `/about-me` → `/bio` → `/profile` → `/projects` → `/portfolio` → `/work`. | **MUST** |
+| **S-05** | Early Exit Score | Stop crawling additional paths for a site only when score >= 20. | **MUST** |
+| **S-06** | Keep Best Page | Always keep the highest-scoring page result per site, not just the first one found. | **MUST** |
+| **S-07** | Rate limiting | Add a 1–2 second delay when scraping more than 50 sites in a batch. | **NOTE** |
 
 -----
 
-## [cite_start]4. Data & Output Standards [cite: 31]
+## 4. Data & Output Standards
 
-### [cite_start]4.1 Input file rules (websites.txt) [cite: 32]
+### 4.1 Input file rules (websites.txt)
 
-  * [cite_start]One domain per line with no trailing slashes. [cite: 33]
-  * [cite_start]No protocol prefix (e.g., use `johndoe.dev`, not `https://johndoe.dev`). [cite: 34]
-  * [cite_start]Blank lines and lines starting with `#` are ignored. [cite: 35]
-  * [cite_start]Domains must be verified as reachable before bulk runs. [cite: 36]
+  * One domain per line with no trailing slashes.
+  * No protocol prefix (e.g., use `johndoe.dev`, not `https://johndoe.dev`).
+  * Blank lines and lines starting with `#` are ignored.
+  * Domains must be verified as reachable before bulk runs.
 
-### [cite_start]4.2 Output CSV schema [cite: 37]
+### 4.2 Output CSV schema
 
-[cite_start]Existing columns must not be renamed or removed; new columns must be added to the right. [cite: 38]
+Existing columns must not be renamed or removed; new columns must be added to the right.
 
 | Column | Type | Description |
 | :--- | :--- | :--- |
-| `site` | string | [cite_start]Input domain as it appeared in `websites.txt`. [cite: 39] |
-| `url` | string | [cite_start]The specific URL that produced the best score. [cite: 39] |
-| `available` | boolean | [cite_start]True if any availability pattern matched on the best page. [cite: 39] |
-| `skills` | string | [cite_start]Comma-separated list of detected skill category names. [cite: 39] |
-| `skill_detail` | string | [cite_start]Dict representation of `{skill: mention_count}` for the best page. [cite: 39] |
-| `score` | integer | [cite_start]Total score: sum of skill mentions + 10 availability bonus. [cite: 39] |
+| `site` | string | Input domain as it appeared in `websites.txt`. |
+| `url` | string | The specific URL that produced the best score. |
+| `available` | boolean | True if any availability pattern matched on the best page. |
+| `skills` | string | Comma-separated list of detected skill category names. |
+| `skill_detail` | string | Dict representation of `{skill: mention_count}` for the best page. |
+| `score` | integer | Total score: sum of skill mentions + 10 availability bonus. |
 
 -----
 
-## [cite_start]5. Versioning & Change Control [cite: 40]
+## 5. Versioning & Change Control
 
-### [cite_start]5.1 Version numbering [cite: 41]
+### 5.1 Version numbering
 
-[cite_start]The project uses Semantic Versioning (MAJOR.MINOR.PATCH). [cite: 42]
+The project uses Semantic Versioning (MAJOR.MINOR.PATCH).
 
-  * [cite_start]**PATCH**: Bugfixes or minor performance improvements with no schema changes. [cite: 43]
-  * [cite_start]**MINOR**: New backward-compatible features (e.g., new skill category or output column). [cite: 44]
-  * [cite_start]**MAJOR**: Breaking changes to module interfaces, output schema, or core architecture. [cite: 45]
+  * **PATCH**: Bugfixes or minor performance improvements with no schema changes.
+  * **MINOR**: New backward-compatible features (e.g., new skill category or output column).
+  * **MAJOR**: Breaking changes to module interfaces, output schema, or core architecture.
 
-### [cite_start]5.2 Git commit message format [cite: 46]
+### 5.2 Git commit message format
 
-[cite_start]Format: `<type>(<scope>): <short description>` [cite: 48]
-[cite_start]Valid types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`. [cite: 49]
+Format: `<type>(<scope>): <short description>`
+Valid types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`.
 
-  * [cite_start]*Example:* `feat(extractor): add Rust and Svelte to skills map` [cite: 50]
+  * *Example:* `feat(extractor): add Rust and Svelte to skills map`
 
-### [cite_start]5.3 Branch strategy [cite: 54]
+### 5.3 Branch strategy
 
-  * [cite_start]**main**: Stable, tested code only. [cite: 55]
-  * [cite_start]**dev**: Active development; merge to main only when features are complete. [cite: 56]
-  * [cite_start]**feature/\<name\>**: For larger features spanning multiple sessions. [cite: 57]
+  * **main**: Stable, tested code only.
+  * **dev**: Active development; merge to main only when features are complete.
+  * **feature/<name>**: For larger features spanning multiple sessions.
 
 -----
 
-## [cite_start]6. Planned Evolution & Scaling Roadmap [cite: 58]
+## 6. Planned Evolution & Scaling Roadmap
 
 | Phase | Name | Key changes |
 | :--- | :--- | :--- |
-| **v1.x** | Current Foundations | [cite_start]Python scraper, regex extraction, CSV output, scoring. [cite: 61] |
-| **v2.0** | Pandas Pipeline | Replace CSV logic with DataFrames. [cite_start]Add cleaning and visualizations. [cite: 61] |
-| **v2.x** | Enrichment | [cite_start]Cross-reference skills against job demand data; relative scoring. [cite: 61] |
-| **v3.0** | Database Layer | [cite_start]SQLite/PostgreSQL backend for persistent results and history tracking. [cite: 61] |
-| **v3.x** | Dashboard | [cite_start]Flask or Streamlit dashboard to browse and filter profiles. [cite: 61] |
-| **v4.0** | Product | [cite_start]Multi-user support, scheduled runs, and API integration. [cite: 61] |
+| **v1.x** | Current Foundations | Python scraper, regex extraction, CSV output, scoring. |
+| **v2.0** | Pandas Pipeline | Replace CSV logic with DataFrames. Add cleaning and visualizations. |
+| **v2.x** | Enrichment | Cross-reference skills against job demand data; relative scoring. |
+| **v3.0** | Database Layer | SQLite/PostgreSQL backend for persistent results and history tracking. |
+| **v3.x** | Dashboard | Flask or Streamlit dashboard to browse and filter profiles. |
+| **v4.0** | Product | Multi-user support, scheduled runs, and API integration. |
 
 -----
 
-## [cite_start]7. Testing Standards [cite: 62]
+## 7. Testing Standards
 
-| \# | Rule | Description | Status |
+| # | Rule | Description | Status |
 | :--- | :--- | :--- | :--- |
-| **T-01** | Test before merging | [cite_start]Manually test against at least 5 real domains before merging to main. [cite: 63] | **MUST** |
-| **T-02** | Unit tests | [cite_start]From v2.0, `extractor.py` functions must have pytest unit tests. [cite: 63] | **NOTE** |
-| **T-03** | Test bad domains | [cite_start]Include at least one unreachable/404 domain to verify error handling. [cite: 63] | **SHOULD** |
-| **T-04** | Validate CSV | [cite_start]Verify results for blank rows, malformed dicts, and non-negative scores. [cite: 63] | **SHOULD** |
-| **T-05** | False positive check | [cite_start]Audit results manually if a skill detection rate exceeds 80%. [cite: 63] | **NOTE** |
+| **T-01** | Test before merging | Manually test against at least 5 real domains before merging to main. | **MUST** |
+| **T-02** | Unit tests | From v2.0, `extractor.py` functions must have pytest unit tests. | **NOTE** |
+| **T-03** | Test bad domains | Include at least one unreachable/404 domain to verify error handling. | **SHOULD** |
+| **T-04** | Validate CSV | Verify results for blank rows, malformed dicts, and non-negative scores. | **SHOULD** |
+| **T-05** | False positive check | Audit results manually if a skill detection rate exceeds 80%. | **NOTE** |
 
 -----
 
-## [cite_start]8. Notes for Future Contributors & AI Assistants [cite: 64]
+## 8. Notes for Future Contributors & AI Assistants
 
-  * [cite_start]Do not refactor working modules without a documented reason; stability is priority. [cite: 66]
-  * [cite_start]Do not add dependencies without updating `requirements.txt`. [cite: 67]
-  * [cite_start]If the CSV schema or scoring formula changes, update Section 4 and the architecture diagram in the same commit. [cite: 68, 69]
-  * [cite_start]New skill patterns in `extractor.py` must include a rationale comment. [cite: 70]
-  * [cite_start]**This document is the source of truth.** If code conflicts with these orders, fix the code. [cite: 71]
+  * Do not refactor working modules without a documented reason; stability is priority.
+  * Do not add dependencies without updating `requirements.txt`.
+  * If the CSV schema or scoring formula changes, update Section 4 and the architecture diagram in the same commit.
+  * New skill patterns in `extractor.py` must include a rationale comment.
+  * **This document is the source of truth.** If code conflicts with these orders, fix the code.
 
 -----
 
-[cite_start]*End of document — Programmer Portfolio Scraper v1.0 Standing Orders* [cite: 72]"
-
-with open("standing_orders.md", "w", encoding="utf-8") as f:
-    f.write(markdown_content)
-
-print("File 'standing_orders.md' has been created successfully!")
+*End of document — Programmer Portfolio Scraper v1.0 Standing Orders*

@@ -15,6 +15,7 @@ This document defines the rules and standards that govern all development on the
 | Version | Date | Author | Notes |
 | :--- | :--- | :--- | :--- |
 | v1.0 | 2026-03-24 | Project founder | Initial release |
+ v1.1 | 2026-04-18 | Chris Chester | Added Selenium/Playwright evaluation note to v2.x roadmap |
 
 -----
 
@@ -138,7 +139,7 @@ Valid types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`.
 | :--- | :--- | :--- |
 | **v1.x** | Current Foundations | Python scraper, regex extraction, CSV output, scoring. |
 | **v2.0** | Pandas Pipeline | Replace CSV logic with DataFrames. Add cleaning and visualizations. |
-| **v2.x** | Enrichment | Cross-reference skills against job demand data; relative scoring. |
+| **v2.x** | Enrichment | Cross-reference skills against job demand data; relative scoring. Evaluate Selenium/Playwright integration for JavaScript-rendered portfolio sites. |
 | **v3.0** | Database Layer | SQLite/PostgreSQL backend for persistent results and history tracking. |
 | **v3.x** | Dashboard | Flask or Streamlit dashboard to browse and filter profiles. |
 | **v4.0** | Product | Multi-user support, scheduled runs, and API integration. |

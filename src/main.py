@@ -1,11 +1,15 @@
 import csv
 import os
+import pandas as pd
 from fetcher import fetch_page
 from parser import parse_html, extract_text
 from extractor import extract_skills, extract_availability
+from cleaner import clean_results
+from visualiser import generate_charts
 
 PATHS = ["", "/about", "/about-me", "/bio", "/profile", "/projects", "/portfolio", "/work"]
-OUTPUT_FILE = "../output/results.csv"
+OUTPUT_DIR = "../output"
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, "results.csv")
 
 def clean_url(site: str) -> str:
     """Normalize URL by stripping protocol prefix so we control it consistently."""
@@ -60,29 +64,42 @@ def scrape_site(site: str) -> dict | None:
     return best_result
 
 def main() -> None:
-    """Read input domains, scrape each site, and write results to CSV."""
+    """Read input domains, scrape each site, clean results, and write CSV and charts."""
     with open("../data/websites.txt") as f:
-        sites = [clean_url(line) for line in f if line.strip()]
+        sites = [clean_url(line) for line in f if line.strip() and not line.startswith("#")]
 
-    results = []
+    raw_results = []
     for site in sites:
         print(f"\n🔍 Scraping: {site}")
         result = scrape_site(site)
         if result:
-            results.append(result)
+            raw_results.append(result)
             print(f"  ✅ Best page: {result['url']} (score={result['score']})")
         else:
             print(f"  ❌ No data found")
-            results.append({"site": site, "url": "", "available": False,
-                            "skills": "", "skill_detail": "", "score": 0})
+            raw_results.append({
+                "site": site,
+                "url": "",
+                "available": False,
+                "skills": "",
+                "skill_detail": "",
+                "score": 0
+            })
 
-    os.makedirs("../output", exist_ok=True)
-    with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["site", "url", "available", "skills", "skill_detail", "score"])
-        writer.writeheader()
-        writer.writerows(results)
+    # Clean results via Pandas
+    print("\n🧹 Cleaning results...")
+    df = clean_results(raw_results)
 
-    print(f"\n📄 Results saved to {OUTPUT_FILE}")
+    # Save CSV
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    df.to_csv(OUTPUT_FILE, index=False)
+    print(f"📄 Results saved to {OUTPUT_FILE}")
+
+    # Generate charts
+    print("📊 Generating charts...")
+    generate_charts(df, OUTPUT_DIR)
+
+    print("\n✅ Pipeline complete!")
 
 if __name__ == "__main__":
     main()

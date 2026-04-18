@@ -7,21 +7,22 @@ from extractor import extract_skills, extract_availability
 PATHS = ["", "/about", "/about-me", "/bio", "/profile", "/projects", "/portfolio", "/work"]
 OUTPUT_FILE = "../output/results.csv"
 
-def clean_url(site):
-    """Normalize URL - strip protocol so we control it."""
+def clean_url(site: str) -> str:
+    """Normalize URL by stripping protocol prefix so we control it consistently."""
     site = site.strip()
     for prefix in ("https://", "http://"):
         if site.startswith(prefix):
             site = site[len(prefix):]
     return site
 
-def score_result(skills, availability):
-    """Score: sum of all skill mention counts + bonus for availability."""
+def score_result(skills: dict[str, int], availability: bool) -> int:
+    """Calculate total score: sum of skill mention counts plus availability bonus."""
     skill_score = sum(skills.values())
     availability_bonus = 10 if availability else 0
     return skill_score + availability_bonus
 
-def scrape_site(site):
+def scrape_site(site: str) -> dict | None:
+    """Crawl a site across all defined paths and return the highest-scoring page result."""
     best_result = None
     best_score = 0
 
@@ -53,13 +54,13 @@ def scrape_site(site):
                 "score": score,
             }
 
-        # Only stop early if we have a strong result
         if score >= 20:
             break
 
     return best_result
 
-def main():
+def main() -> None:
+    """Read input domains, scrape each site, and write results to CSV."""
     with open("../data/websites.txt") as f:
         sites = [clean_url(line) for line in f if line.strip()]
 

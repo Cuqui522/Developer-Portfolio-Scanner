@@ -1,7 +1,7 @@
 import requests
 
-def fetch_page(url):
-    # Strip protocol if already present to avoid double https://
+def fetch_page(url: str) -> tuple[str | None, int | str]:
+    """Fetch raw HTML and HTTP status from a URL, handling all network errors explicitly."""
     if url.startswith("http://") or url.startswith("https://"):
         full_url = url
     else:

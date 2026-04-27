@@ -40,6 +40,23 @@ This project demonstrates how basic web scraping techniques can automate that di
 
 ---
 
+## The Problem It Solves
+
+A recruiter or talent scout looking for developers who are open to work has 
+two options: post a job and wait, or go looking. If they go looking, that 
+means manually visiting portfolio sites one by one — checking for availability 
+signals, trying to infer skills from project descriptions, copy-pasting into 
+a spreadsheet.
+
+It's slow, inconsistent, and entirely dependent on whoever has time to do it 
+that day.
+
+This tool automates that process. Give it a list of URLs and it returns a 
+clean, scored dataset of developer availability and skills — in seconds instead 
+of hours.
+
+---
+
 ## System Architecture
 
 ```mermaid
